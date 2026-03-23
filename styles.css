@@ -1,0 +1,227 @@
+/* Charity: water Brand Colors & Fonts
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+Fonts:
+- Proxima Nova
+- Avenir
+
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 12px;
+    background-color: #2E9DF7;
+    font-family: Proxima Nova, sans-serif;
+    position: relative;
+}
+
+.brand-corner {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.brand-corner-image {
+    width: 168px;
+    height: auto;
+    display: block;
+}
+
+
+.game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: min(95vw, 800px);
+}
+
+.score-panel {
+  
+    display: flex;
+    justify-content: space-between;  /* Space between score and button */
+    align-items: center;
+    width: 100%;
+    padding: 8px;
+    background-color:#FFC907;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.timer {
+    flex: 0 1 auto;
+    font-size: 22px;
+    font-family: Proxima Nova, sans-serif;
+    font-weight: bold;
+}
+
+.game-frame-wrap {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0px;
+}
+
+.frame-side-image {
+    height: 580px;
+    width: auto;
+    max-width: 110px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.frame-side-image-right {
+    transform: scaleX(-1);
+}
+
+#game-container {
+    width: 100%;
+    height: 550px;
+    background-color: #e6f7ff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+#start-btn {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#start-btn:hover {
+    background-color: #159A48;
+}
+
+.score {
+    flex: 0 1 auto;  /* Don't grow, can shrink, auto basis */
+    font-size: 22px;
+    font-family: Proxima Nova, sans-serif;
+    font-weight: bold;
+}
+
+.water-drop {
+    position: absolute;
+    width: 60px;  /* increased from 40px */
+    height: 60px; /* increased from 40px */
+    background-color: #0099ff;
+    border-radius: 50%;
+    animation: dropFall linear forwards;
+    transform-origin: center;
+    cursor: pointer;
+    padding: 15px;  /* Add padding for larger click area */
+    margin: -15px;  /* Offset padding to maintain visual size */
+    transition: transform 0.1s ease;  /* Smooth hover effect */
+}
+
+.water-drop:hover {
+    transform: scale(1.1);  /* Slight grow effect on hover */
+}
+
+.bad-drop {
+    background-color: #ff4444;
+}
+
+.game-title {
+    color: #131313;
+    font-size: 48px;
+    font-family: Avenir, sans-serif;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.intro-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -6px;
+    gap: 1px;
+}
+
+.game-tagline {
+
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.link-info {
+    color: #666;
+    margin: 0;
+    text-align: center;
+}
+
+@keyframes dropFall {
+    from {
+        transform: translateY(-20px);
+    }
+    to {
+        transform: translateY(600px);
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    .game-title {
+      font-size: 38px;
+      margin-top: 20px;
+    }
+    
+    .game-tagline .intro-block{
+        font-size: 12px;
+    }
+    .score .timer{
+        font-size: 8px;
+    }
+
+    .game-frame-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    #game-container {
+        height: 460px;
+    }
+
+    .frame-side-image {
+        display: none;
+    }
+    
+}
+
+
+
