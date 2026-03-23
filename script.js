@@ -14,13 +14,18 @@ const goalDisplay = document.getElementById("goal");
 const difficultySelect = document.getElementById("difficulty-select");
 const messageDisplay = document.getElementById("game-message");
 const gameContainer = document.getElementById("game-container");
+const goodDropSound = new Audio("Video Project 6.mp3");
+const badDropSound = new Audio("7.mp3");
+
+goodDropSound.preload = "auto";
+badDropSound.preload = "auto";
 
 let currentDifficulty = difficultySelect ? difficultySelect.value : "normal";
 
 const difficultyDisplaySettings = {
-  easy: { initialTime: 35, goalScore: 12, badDropChance: 0.3, dropIntervalMs: 750, badDropPenalty: 1 },
+  easy: { initialTime: 35, goalScore: 15, badDropChance: 0.3, dropIntervalMs: 750, badDropPenalty: 1 },
   normal: { initialTime: 30, goalScore: 20, badDropChance: 0.4, dropIntervalMs: 600, badDropPenalty: 2 },
-  hard: { initialTime: 22, goalScore: 26, badDropChance: 0.5, dropIntervalMs: 470, badDropPenalty: 3 }
+  hard: { initialTime: 25, goalScore: 25, badDropChance: 0.5, dropIntervalMs: 470, badDropPenalty: 3 }
 };
 
 // Update the goal score and initial time display
@@ -159,10 +164,16 @@ function createDrop() {
   }
 
   drop.addEventListener("click", () => {
-    if (drop.classList.contains("bad-drop")) { 
+    const clickedBadDrop = drop.classList.contains("bad-drop");
+
+    if (clickedBadDrop) { 
+      badDropSound.currentTime = 0;
+      badDropSound.play().catch(() => {});
       score -= getBadDropPenalty();
       if (score < 0) score = 0;
     } else {
+      goodDropSound.currentTime = 0;
+      goodDropSound.play().catch(() => {});
       score += 1;
     }
 
