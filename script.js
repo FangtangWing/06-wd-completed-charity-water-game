@@ -5,12 +5,58 @@ let dropMaker; // Will store our timer that creates drops regularly
 let timer = null;
 let score = 0;
 let timeLeft = 30; 
-const badDropChance = 0.4;
+const defaultBadDropChance = 0.4;
+const defaultGoal = 20;
 
 const timeDisplay = document.getElementById("time");
 const scoreDisplay = document.getElementById("score");
+const goalDisplay = document.getElementById("goal");
+const difficultySelect = document.getElementById("difficulty-select");
 const messageDisplay = document.getElementById("game-message");
 const gameContainer = document.getElementById("game-container");
+
+let currentDifficulty = difficultySelect ? difficultySelect.value : "normal";
+
+const difficultyDisplaySettings = {
+  easy: { initialTime: 35, goalScore: 12, badDropChance: 0.3, dropIntervalMs: 750, badDropPenalty: 1 },
+  normal: { initialTime: 30, goalScore: 20, badDropChance: 0.4, dropIntervalMs: 600, badDropPenalty: 2 },
+  hard: { initialTime: 22, goalScore: 26, badDropChance: 0.5, dropIntervalMs: 470, badDropPenalty: 3 }
+};
+
+// Update the goal score and initial time display
+function updateDifficultyPreview() {
+  const settings = difficultyDisplaySettings[currentDifficulty];
+  if (!settings) return;
+  if (goalDisplay) {
+    goalDisplay.textContent = String(getGoalScore());
+  }
+  if (!gameRunning) {
+    timeLeft = settings.initialTime;
+    updateTimeDisplay();
+  }
+}
+
+function setCurrentDifficulty(value) {
+  if (value !== "easy" && value !== "normal" && value !== "hard") return;
+  currentDifficulty = value;
+}
+
+function getBadDropChance() {
+  return difficultyDisplaySettings[currentDifficulty]?.badDropChance || defaultBadDropChance;
+}
+
+function getGoalScore() {
+  return difficultyDisplaySettings[currentDifficulty]?.goalScore || defaultGoal;
+}
+
+function getDropInterval() {
+  return difficultyDisplaySettings[currentDifficulty]?.dropIntervalMs || 600;
+}
+
+
+function getBadDropPenalty() {
+  return difficultyDisplaySettings[currentDifficulty]?.badDropPenalty || 2;
+}
 
 const winningMessages = [
   "🎉Good job. You win this game.🎉",
@@ -41,8 +87,13 @@ function endGame() {
   clearInterval(timer);
   clearInterval(dropMaker);
   gameContainer.replaceChildren();
+  
+  // Unlock difficulty selection after game ends
+  if (difficultySelect) {
+    difficultySelect.disabled = false;
+  }
 
-  if (score >= 20) {
+  if (score >= getGoalScore()) {
     messageDisplay.textContent = getRandomMessage(winningMessages);
   } else {
     messageDisplay.textContent = getRandomMessage(losingMessages);
@@ -57,6 +108,14 @@ messageDisplay.textContent = "";
 
 // Wait for button click to start the game
 document.getElementById("start-btn").addEventListener("click", startGame);
+if (difficultySelect) {
+  difficultySelect.addEventListener("change", (event) => {
+    setCurrentDifficulty(event.target.value);
+    updateDifficultyPreview();
+  });
+}
+
+updateDifficultyPreview();
 
 function startGame() {
   // Prevent multiple games from running at once
@@ -64,9 +123,14 @@ function startGame() {
 
   gameRunning = true;
   messageDisplay.textContent = "";
+  
+  // Lock difficulty selection during gameplay
+  if (difficultySelect) {
+    difficultySelect.disabled = true;
+  }
 
-  // Create new drops every second (600 milliseconds)
-  dropMaker = setInterval(createDrop, 600);
+  // Create new drops at difficulty-based interval
+  dropMaker = setInterval(createDrop, getDropInterval());
   timer = setInterval(() => {
     if (timeLeft > 0) {
       timeLeft -= 1;
@@ -88,7 +152,7 @@ function createDrop() {
   // Create a new div element that will be our water drop
   const drop = document.createElement("div");
   drop.className = "water-drop";
-  const isBadDrop = Math.random() < badDropChance;
+  const isBadDrop = Math.random() < getBadDropChance();
 
   if (isBadDrop) {
     drop.classList.add("bad-drop");
@@ -96,7 +160,7 @@ function createDrop() {
 
   drop.addEventListener("click", () => {
     if (drop.classList.contains("bad-drop")) { 
-      score -= 2;
+      score -= getBadDropPenalty();
       if (score < 0) score = 0;
     } else {
       score += 1;

@@ -65,18 +65,20 @@ body {
     display: flex;
     justify-content: space-between;  /* Space between score and button */
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     width: 100%;
     padding: 8px;
     background-color:#FFC907;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-family: Proxima Nova, sans-serif;
+    font-weight: bold;
 }
 
 .timer {
     flex: 0 1 auto;
     font-size: 22px;
-    font-family: Proxima Nova, sans-serif;
-    font-weight: bold;
 }
 
 .game-frame-wrap {
@@ -118,6 +120,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    font-family: Proxima Nova, sans-serif;
 }
 
 #start-btn:hover {
@@ -127,8 +130,27 @@ body {
 .score {
     flex: 0 1 auto;  /* Don't grow, can shrink, auto basis */
     font-size: 22px;
+}
+
+.goal {
+    flex: 0 1 auto;
+    font-size: 22px;
+}
+
+.difficulty-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+}
+
+#difficulty-select {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 16px;
+    background-color: #fff;
     font-family: Proxima Nova, sans-serif;
-    font-weight: bold;
 }
 
 .water-drop {
@@ -205,8 +227,18 @@ body {
     .game-tagline .intro-block{
         font-size: 12px;
     }
-    .score .timer{
-        font-size: 8px;
+
+
+    .score, .timer, .goal,
+    .difficulty-control {
+        font-size: 12px;
+        margin: -5px;
+    }
+
+
+
+    #start-btn {
+        width: 100%;
     }
 
     .game-frame-wrap {
